@@ -1,18 +1,10 @@
 {
-  "src/app/page.tsx -> @/components/widgets/TideChart": {
-    "id": "src/app/page.tsx -> @/components/widgets/TideChart",
-    "files": [
-      "static/chunks/node_modules_e6b29c._.js",
-      "static/chunks/src_components_widgets_TideChart_tsx_36c78a._.js",
-      "static/chunks/src_components_widgets_TideChart_tsx_3e3b3f._.js"
-    ]
-  },
-  "src/app/page.tsx -> @/components/tools/PackingChecklist": {
-    "id": "src/app/page.tsx -> @/components/tools/PackingChecklist",
+  "src/app/page.tsx -> @/components/widgets/WeatherWidget": {
+    "id": "src/app/page.tsx -> @/components/widgets/WeatherWidget",
     "files": [
       "static/chunks/node_modules_e50a98._.js",
-      "static/chunks/src_components_tools_PackingChecklist_tsx_9a60aa._.js",
-      "static/chunks/src_components_tools_PackingChecklist_tsx_e7c49e._.js"
+      "static/chunks/src_d4fc0a._.js",
+      "static/chunks/src_components_widgets_WeatherWidget_tsx_7d173b._.js"
     ]
   },
   "src/app/page.tsx -> @/components/tools/TripPlanner": {
@@ -23,12 +15,12 @@
       "static/chunks/src_components_tools_TripPlanner_tsx_50a2f0._.js"
     ]
   },
-  "src/app/page.tsx -> @/components/widgets/WeatherWidget": {
-    "id": "src/app/page.tsx -> @/components/widgets/WeatherWidget",
+  "src/app/page.tsx -> @/components/tools/PackingChecklist": {
+    "id": "src/app/page.tsx -> @/components/tools/PackingChecklist",
     "files": [
       "static/chunks/node_modules_e50a98._.js",
-      "static/chunks/src_components_widgets_WeatherWidget_tsx_cb1fff._.js",
-      "static/chunks/src_components_widgets_WeatherWidget_tsx_07e57d._.js"
+      "static/chunks/src_components_tools_PackingChecklist_tsx_9a60aa._.js",
+      "static/chunks/src_components_tools_PackingChecklist_tsx_e7c49e._.js"
     ]
   },
   "src/app/page.tsx -> @/components/tools/DistanceCalculator": {
@@ -37,6 +29,14 @@
       "static/chunks/node_modules_e50a98._.js",
       "static/chunks/src_components_tools_DistanceCalculator_tsx_67744e._.js",
       "static/chunks/src_components_tools_DistanceCalculator_tsx_c12ee5._.js"
+    ]
+  },
+  "src/app/page.tsx -> @/components/widgets/TideChart": {
+    "id": "src/app/page.tsx -> @/components/widgets/TideChart",
+    "files": [
+      "static/chunks/node_modules_e50a98._.js",
+      "static/chunks/src_b3a95b._.js",
+      "static/chunks/src_components_widgets_TideChart_tsx_fc0326._.js"
     ]
   }
 }

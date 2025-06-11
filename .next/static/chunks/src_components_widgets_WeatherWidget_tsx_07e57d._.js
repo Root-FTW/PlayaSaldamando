@@ -6,7 +6,7 @@
   "path": "static/chunks/src_components_widgets_WeatherWidget_tsx_07e57d._.js",
   "chunks": [
     "static/chunks/node_modules_e50a98._.js",
-    "static/chunks/src_components_widgets_WeatherWidget_tsx_cb1fff._.js"
+    "static/chunks/src_d4fc0a._.js"
   ],
   "source": "dynamic"
 });

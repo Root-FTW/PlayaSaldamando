@@ -2,71 +2,46 @@
 
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import {
-  ArrowUpIcon,
-  ArrowDownIcon,
-  ClockIcon,
-  InformationCircleIcon
-} from '@heroicons/react/24/outline';
-
-interface TideData {
-  time: string;
-  height: number;
-  type: 'high' | 'low';
-}
+import { tidesService, type TideInfo } from '@/services/tidesService';
 
 export default function TideChart() {
-  const [tides, setTides] = useState<TideData[]>([]);
-  const [currentTide, setCurrentTide] = useState<string>('');
+  const [tideInfo, setTideInfo] = useState<TideInfo | null>(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [showTomorrow, setShowTomorrow] = useState(false);
+  const [lastUpdated, setLastUpdated] = useState<string>('');
 
   useEffect(() => {
-    // Simulate tide data for Ensenada area
-    const generateTideData = () => {
-      const now = new Date();
-      const tideData: TideData[] = [];
+    const fetchTideData = async () => {
+      try {
+        setLoading(true);
+        setError(null);
 
-      // Generate 4 tide times for today (2 high, 2 low)
-      const baseTimes = [
-        { hour: 6, minute: 30, type: 'high' as const, height: 1.8 },
-        { hour: 12, minute: 45, type: 'low' as const, height: 0.3 },
-        { hour: 18, minute: 15, type: 'high' as const, height: 1.9 },
-        { hour: 23, minute: 50, type: 'low' as const, height: 0.2 },
-      ];
+        const data = await tidesService.getTideData();
+        setTideInfo(data);
 
-      baseTimes.forEach(tide => {
-        const tideTime = new Date(now);
-        tideTime.setHours(tide.hour, tide.minute, 0, 0);
-
-        tideData.push({
-          time: tideTime.toLocaleTimeString('en-US', {
-            hour: '2-digit',
-            minute: '2-digit',
-            hour12: true
-          }),
-          height: tide.height,
-          type: tide.type
+        // Set last updated time
+        const updateTime = new Date(data.lastUpdated).toLocaleTimeString('en-US', {
+          hour: '2-digit',
+          minute: '2-digit',
+          hour12: true
         });
-      });
+        setLastUpdated(updateTime);
 
-      setTides(tideData);
-
-      // Determine current tide status
-      const currentHour = now.getHours();
-      if (currentHour >= 6 && currentHour < 12) {
-        setCurrentTide('Rising tide');
-      } else if (currentHour >= 12 && currentHour < 18) {
-        setCurrentTide('Falling tide');
-      } else if (currentHour >= 18 && currentHour < 23) {
-        setCurrentTide('Rising tide');
-      } else {
-        setCurrentTide('Falling tide');
+      } catch (err) {
+        console.error('Error fetching tide data:', err);
+        setError('Unable to load tide data');
+      } finally {
+        setLoading(false);
       }
-
-      setLoading(false);
     };
 
-    generateTideData();
+    fetchTideData();
+
+    // Refresh tide data every 30 minutes
+    const interval = setInterval(fetchTideData, 30 * 60 * 1000);
+
+    return () => clearInterval(interval);
   }, []);
 
   if (loading) {
@@ -84,6 +59,19 @@ export default function TideChart() {
     );
   }
 
+  if (error || !tideInfo) {
+    return (
+      <div className="bg-white rounded-xl shadow-lg p-6 border border-gray-100">
+        <div className="text-center text-red-600">
+          <p className="text-sm">Unable to load tide data</p>
+          <p className="text-xs text-gray-500 mt-1">Showing simulated data</p>
+        </div>
+      </div>
+    );
+  }
+
+  const currentTides = showTomorrow ? tideInfo.tomorrowTides : tideInfo.todayTides;
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -91,21 +79,59 @@ export default function TideChart() {
       className="bg-gradient-to-br from-blue-50 to-cyan-50 rounded-xl shadow-lg p-6 border border-gray-100"
     >
       <div className="flex items-center justify-between mb-4">
-        <h3 className="text-lg font-semibold text-gray-900">Today's Tides</h3>
-        <ClockIcon className="h-5 w-5 text-blue-500" />
+        <h3 className="text-lg font-semibold text-gray-900">Tide Information</h3>
+        <div className="text-xs text-gray-500">{tideInfo.location}</div>
       </div>
 
+      {/* Current Tide Status */}
       <div className="mb-4 p-3 bg-blue-100 rounded-lg">
-        <div className="flex items-center space-x-2">
-          <div className="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></div>
-          <span className="text-sm font-medium text-blue-800">{currentTide}</span>
+        <div className="flex items-center justify-between">
+          <div className="flex items-center space-x-2">
+            <div className={`w-2 h-2 rounded-full animate-pulse ${
+              tideInfo.currentTide.status === 'Rising' ? 'bg-green-500' : 'bg-orange-500'
+            }`}></div>
+            <span className="text-sm font-medium text-blue-800">
+              {tideInfo.currentTide.status} Tide
+            </span>
+          </div>
+          <div className="text-xs text-blue-600">
+            Next: {tideInfo.currentTide.nextTide.type} in {tideInfo.currentTide.timeToNext}
+          </div>
+        </div>
+        <div className="mt-2 text-xs text-blue-700">
+          {tidesService.getTideAdvice(tideInfo.currentTide.status, tideInfo.currentTide.nextTide)}
         </div>
       </div>
 
+      {/* Day Toggle */}
+      <div className="flex mb-4">
+        <button
+          onClick={() => setShowTomorrow(false)}
+          className={`flex-1 py-2 px-4 text-sm font-medium rounded-l-lg transition-colors ${
+            !showTomorrow
+              ? 'bg-blue-600 text-white'
+              : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+          }`}
+        >
+          Today
+        </button>
+        <button
+          onClick={() => setShowTomorrow(true)}
+          className={`flex-1 py-2 px-4 text-sm font-medium rounded-r-lg transition-colors ${
+            showTomorrow
+              ? 'bg-blue-600 text-white'
+              : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+          }`}
+        >
+          Tomorrow
+        </button>
+      </div>
+
+      {/* Tide List */}
       <div className="space-y-3">
-        {tides.map((tide, index) => (
+        {currentTides.map((tide, index) => (
           <motion.div
-            key={index}
+            key={`${showTomorrow ? 'tomorrow' : 'today'}-${index}`}
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: index * 0.1 }}
@@ -113,35 +139,48 @@ export default function TideChart() {
           >
             <div className="flex items-center space-x-3">
               <div className={`p-2 rounded-full ${
-                tide.type === 'high'
+                tide.type === 'High'
                   ? 'bg-blue-100 text-blue-600'
                   : 'bg-orange-100 text-orange-600'
               }`}>
-                {tide.type === 'high' ? (
-                  <ArrowUpIcon className="h-4 w-4" />
-                ) : (
-                  <ArrowDownIcon className="h-4 w-4" />
-                )}
+                <span className="text-lg">
+                  {tide.type === 'High' ? '⬆️' : '⬇️'}
+                </span>
               </div>
               <div>
                 <div className="font-medium text-gray-900">{tide.time}</div>
                 <div className="text-sm text-gray-500">
-                  {tide.type === 'high' ? 'High Tide' : 'Low Tide'}
+                  {tide.type} Tide
                 </div>
               </div>
             </div>
             <div className="text-right">
-              <div className="font-semibold text-gray-900">{tide.height}m</div>
+              <div className="font-semibold text-gray-900">
+                {tidesService.getTideHeight(tide.height)}
+              </div>
+              <div className="text-xs text-gray-500">
+                {tide.timestamp > Date.now() ? 'Upcoming' : 'Past'}
+              </div>
             </div>
           </motion.div>
         ))}
       </div>
 
+      {/* Footer Info */}
       <div className="mt-4 pt-4 border-t border-gray-200">
+        <div className="flex justify-between items-center text-xs text-gray-500 mb-2">
+          <div>
+            Data from NOAA • Updated: {lastUpdated}
+          </div>
+          <div>
+            Station: Ensenada, MX
+          </div>
+        </div>
         <div className="flex items-start space-x-2">
-          <InformationCircleIcon className="h-4 w-4 text-blue-500 mt-0.5 flex-shrink-0" />
+          <span className="text-blue-500 mt-0.5">ℹ️</span>
           <div className="text-xs text-gray-600">
-            Tide times are approximate. Check local conditions before water activities.
+            Real-time tide data from NOAA. Times are in local time (PST/PDT).
+            Check current conditions before water activities.
           </div>
         </div>
       </div>

@@ -3008,10 +3008,12 @@ __turbopack_esm__({
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_import__("[project]/node_modules/next/dist/compiled/react/jsx-dev-runtime.js [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_import__("[project]/node_modules/next/dist/compiled/react/index.js [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$dom$2f$motion$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_import__("[project]/node_modules/framer-motion/dist/es/render/dom/motion.mjs [app-client] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$services$2f$weatherService$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_import__("[project]/src/services/weatherService.ts [app-client] (ecmascript)");
 "__TURBOPACK__ecmascript__hoisting__location__";
 ;
 var _s = __turbopack_refresh__.signature();
 'use client';
+;
 ;
 ;
 function WeatherWidget() {
@@ -3019,31 +3021,32 @@ function WeatherWidget() {
     const [weather, setWeather] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(null);
     const [loading, setLoading] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(true);
     const [error, setError] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(null);
+    const [lastUpdated, setLastUpdated] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])('');
     (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useEffect"])(()=>{
-        // Simulate weather data for Ensenada, Baja California
-        // In a real app, you'd fetch from a weather API like OpenWeatherMap
-        const simulateWeatherData = ()=>{
-            const conditions = [
-                'Sunny',
-                'Partly Cloudy',
-                'Clear',
-                'Breezy'
-            ];
-            const randomCondition = conditions[Math.floor(Math.random() * conditions.length)];
-            const mockWeather = {
-                temperature: Math.floor(Math.random() * 10) + 18,
-                condition: randomCondition,
-                humidity: Math.floor(Math.random() * 30) + 60,
-                windSpeed: Math.floor(Math.random() * 15) + 5,
-                visibility: Math.floor(Math.random() * 5) + 10,
-                icon: randomCondition.includes('Cloud') ? 'cloudy' : 'sunny'
-            };
-            setTimeout(()=>{
-                setWeather(mockWeather);
+        const fetchWeatherData = async ()=>{
+            try {
+                setLoading(true);
+                setError(null);
+                const weatherData = await __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$services$2f$weatherService$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["weatherService"].getCurrentWeather();
+                setWeather(weatherData);
+                // Set last updated time
+                const updateTime = new Date(weatherData.lastUpdated * 1000).toLocaleTimeString('en-US', {
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    hour12: true
+                });
+                setLastUpdated(updateTime);
+            } catch (err) {
+                console.error('Error fetching weather:', err);
+                setError('Unable to load weather data');
+            } finally{
                 setLoading(false);
-            }, 1000);
+            }
         };
-        simulateWeatherData();
+        fetchWeatherData();
+        // Refresh weather data every 10 minutes
+        const interval = setInterval(fetchWeatherData, 10 * 60 * 1000);
+        return ()=>clearInterval(interval);
     }, []);
     const getWeatherIcon = (condition)=>{
         if (condition.includes('Cloud')) {
@@ -3052,7 +3055,7 @@ function WeatherWidget() {
                 children: "☁️"
             }, void 0, false, {
                 fileName: "[project]/src/components/widgets/WeatherWidget.tsx",
-                lineNumber: 47,
+                lineNumber: 48,
                 columnNumber: 14
             }, this);
         }
@@ -3061,7 +3064,7 @@ function WeatherWidget() {
             children: "☀️"
         }, void 0, false, {
             fileName: "[project]/src/components/widgets/WeatherWidget.tsx",
-            lineNumber: 49,
+            lineNumber: 50,
             columnNumber: 12
         }, this);
     };
@@ -3075,39 +3078,39 @@ function WeatherWidget() {
                         className: "h-4 bg-gray-200 rounded w-3/4 mb-4"
                     }, void 0, false, {
                         fileName: "[project]/src/components/widgets/WeatherWidget.tsx",
-                        lineNumber: 56,
+                        lineNumber: 57,
                         columnNumber: 11
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                         className: "h-8 bg-gray-200 rounded w-1/2 mb-2"
                     }, void 0, false, {
                         fileName: "[project]/src/components/widgets/WeatherWidget.tsx",
-                        lineNumber: 57,
+                        lineNumber: 58,
                         columnNumber: 11
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                         className: "h-4 bg-gray-200 rounded w-full mb-2"
                     }, void 0, false, {
                         fileName: "[project]/src/components/widgets/WeatherWidget.tsx",
-                        lineNumber: 58,
+                        lineNumber: 59,
                         columnNumber: 11
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                         className: "h-4 bg-gray-200 rounded w-2/3"
                     }, void 0, false, {
                         fileName: "[project]/src/components/widgets/WeatherWidget.tsx",
-                        lineNumber: 59,
+                        lineNumber: 60,
                         columnNumber: 11
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/components/widgets/WeatherWidget.tsx",
-                lineNumber: 55,
+                lineNumber: 56,
                 columnNumber: 9
             }, this)
         }, void 0, false, {
             fileName: "[project]/src/components/widgets/WeatherWidget.tsx",
-            lineNumber: 54,
+            lineNumber: 55,
             columnNumber: 7
         }, this);
     }
@@ -3120,7 +3123,7 @@ function WeatherWidget() {
                     children: "Current Weather"
                 }, void 0, false, {
                     fileName: "[project]/src/components/widgets/WeatherWidget.tsx",
-                    lineNumber: 68,
+                    lineNumber: 69,
                     columnNumber: 9
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -3128,13 +3131,13 @@ function WeatherWidget() {
                     children: "Unable to load weather data"
                 }, void 0, false, {
                     fileName: "[project]/src/components/widgets/WeatherWidget.tsx",
-                    lineNumber: 69,
+                    lineNumber: 70,
                     columnNumber: 9
                 }, this)
             ]
         }, void 0, true, {
             fileName: "[project]/src/components/widgets/WeatherWidget.tsx",
-            lineNumber: 67,
+            lineNumber: 68,
             columnNumber: 7
         }, this);
     }
@@ -3157,7 +3160,7 @@ function WeatherWidget() {
                         children: "Current Weather"
                     }, void 0, false, {
                         fileName: "[project]/src/components/widgets/WeatherWidget.tsx",
-                        lineNumber: 81,
+                        lineNumber: 82,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3165,13 +3168,13 @@ function WeatherWidget() {
                         children: "Ensenada, BC"
                     }, void 0, false, {
                         fileName: "[project]/src/components/widgets/WeatherWidget.tsx",
-                        lineNumber: 82,
+                        lineNumber: 83,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/components/widgets/WeatherWidget.tsx",
-                lineNumber: 80,
+                lineNumber: 81,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3190,7 +3193,7 @@ function WeatherWidget() {
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/components/widgets/WeatherWidget.tsx",
-                                    lineNumber: 89,
+                                    lineNumber: 90,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3198,24 +3201,24 @@ function WeatherWidget() {
                                     children: weather.condition
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/widgets/WeatherWidget.tsx",
-                                    lineNumber: 90,
+                                    lineNumber: 91,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/components/widgets/WeatherWidget.tsx",
-                            lineNumber: 88,
+                            lineNumber: 89,
                             columnNumber: 11
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/src/components/widgets/WeatherWidget.tsx",
-                    lineNumber: 86,
+                    lineNumber: 87,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/src/components/widgets/WeatherWidget.tsx",
-                lineNumber: 85,
+                lineNumber: 86,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3228,7 +3231,7 @@ function WeatherWidget() {
                                 className: "w-4 h-4 bg-blue-500 rounded-full"
                             }, void 0, false, {
                                 fileName: "[project]/src/components/widgets/WeatherWidget.tsx",
-                                lineNumber: 97,
+                                lineNumber: 98,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3238,7 +3241,7 @@ function WeatherWidget() {
                                         children: "Humidity"
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/widgets/WeatherWidget.tsx",
-                                        lineNumber: 99,
+                                        lineNumber: 100,
                                         columnNumber: 13
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3249,19 +3252,19 @@ function WeatherWidget() {
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/components/widgets/WeatherWidget.tsx",
-                                        lineNumber: 100,
+                                        lineNumber: 101,
                                         columnNumber: 13
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/components/widgets/WeatherWidget.tsx",
-                                lineNumber: 98,
+                                lineNumber: 99,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/components/widgets/WeatherWidget.tsx",
-                        lineNumber: 96,
+                        lineNumber: 97,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3272,7 +3275,7 @@ function WeatherWidget() {
                                 children: "💨"
                             }, void 0, false, {
                                 fileName: "[project]/src/components/widgets/WeatherWidget.tsx",
-                                lineNumber: 105,
+                                lineNumber: 106,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3282,7 +3285,7 @@ function WeatherWidget() {
                                         children: "Wind"
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/widgets/WeatherWidget.tsx",
-                                        lineNumber: 107,
+                                        lineNumber: 108,
                                         columnNumber: 13
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3293,19 +3296,19 @@ function WeatherWidget() {
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/components/widgets/WeatherWidget.tsx",
-                                        lineNumber: 108,
+                                        lineNumber: 109,
                                         columnNumber: 13
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/components/widgets/WeatherWidget.tsx",
-                                lineNumber: 106,
+                                lineNumber: 107,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/components/widgets/WeatherWidget.tsx",
-                        lineNumber: 104,
+                        lineNumber: 105,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3316,7 +3319,7 @@ function WeatherWidget() {
                                 children: "👁️"
                             }, void 0, false, {
                                 fileName: "[project]/src/components/widgets/WeatherWidget.tsx",
-                                lineNumber: 113,
+                                lineNumber: 114,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3326,7 +3329,7 @@ function WeatherWidget() {
                                         children: "Visibility"
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/widgets/WeatherWidget.tsx",
-                                        lineNumber: 115,
+                                        lineNumber: 116,
                                         columnNumber: 13
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3337,19 +3340,19 @@ function WeatherWidget() {
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/components/widgets/WeatherWidget.tsx",
-                                        lineNumber: 116,
+                                        lineNumber: 117,
                                         columnNumber: 13
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/components/widgets/WeatherWidget.tsx",
-                                lineNumber: 114,
+                                lineNumber: 115,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/components/widgets/WeatherWidget.tsx",
-                        lineNumber: 112,
+                        lineNumber: 113,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3360,7 +3363,7 @@ function WeatherWidget() {
                                 children: "🌞"
                             }, void 0, false, {
                                 fileName: "[project]/src/components/widgets/WeatherWidget.tsx",
-                                lineNumber: 121,
+                                lineNumber: 122,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3370,7 +3373,7 @@ function WeatherWidget() {
                                         children: "UV Index"
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/widgets/WeatherWidget.tsx",
-                                        lineNumber: 123,
+                                        lineNumber: 124,
                                         columnNumber: 13
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3378,25 +3381,25 @@ function WeatherWidget() {
                                         children: "Moderate"
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/widgets/WeatherWidget.tsx",
-                                        lineNumber: 124,
+                                        lineNumber: 125,
                                         columnNumber: 13
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/components/widgets/WeatherWidget.tsx",
-                                lineNumber: 122,
+                                lineNumber: 123,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/components/widgets/WeatherWidget.tsx",
-                        lineNumber: 120,
+                        lineNumber: 121,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/components/widgets/WeatherWidget.tsx",
-                lineNumber: 95,
+                lineNumber: 96,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3406,22 +3409,22 @@ function WeatherWidget() {
                     children: "Perfect beach weather! 🏖️"
                 }, void 0, false, {
                     fileName: "[project]/src/components/widgets/WeatherWidget.tsx",
-                    lineNumber: 130,
+                    lineNumber: 131,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/src/components/widgets/WeatherWidget.tsx",
-                lineNumber: 129,
+                lineNumber: 130,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/src/components/widgets/WeatherWidget.tsx",
-        lineNumber: 75,
+        lineNumber: 76,
         columnNumber: 5
     }, this);
 }
-_s(WeatherWidget, "TVsks5rssGOnhEQ1DibgKtVD/q4=");
+_s(WeatherWidget, "MJzcFkrIMts8DG+thUUFeFoiJkY=");
 _c = WeatherWidget;
 var _c;
 __turbopack_refresh__.register(_c, "WeatherWidget");
