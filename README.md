@@ -57,7 +57,7 @@ The website is fully responsive and provides an optimal viewing experience acros
   - Mexico: +52 646 118 5974
   - Email: gsaldamando@cox.net
 - **Accommodations**: 
-  - Beachfront camping: $460 MXN/night
+  - Beachfront camping: $450 MXN/night
   - Trailer rentals: $1,700 MXN/night
   - Day camping: $310 MXN/day
 
