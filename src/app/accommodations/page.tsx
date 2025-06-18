@@ -46,7 +46,6 @@ const accommodations = [
       'Clean water',
       'Ocean view deck',
       'Bedding included',
-      'WiFi available',
       'Refrigerator',
       'Hot water'
     ],
