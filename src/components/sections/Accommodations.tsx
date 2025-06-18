@@ -39,8 +39,7 @@ const accommodations = [
       'Private bathroom',
       'Clean water',
       'Ocean view deck',
-      'Bedding included',
-      'WiFi available'
+      'Bedding included'
     ],
     image: 'https://images.unsplash.com/photo-1520637736862-4d197d17c93a?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
     popular: false
