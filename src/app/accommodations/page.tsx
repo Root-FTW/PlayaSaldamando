@@ -12,7 +12,7 @@ const accommodations = [
     id: 'beachfront-camping',
     title: 'Beachfront Camping',
     subtitle: 'Sleep Under the Stars',
-    price: '$460 MXN',
+    price: '$450 MXN',
     priceNote: 'per night (up to 4 people)',
     description: 'Experience the ultimate beach camping adventure with your tent just steps from the Pacific Ocean. Wake up to stunning sunrises and fall asleep to the sound of waves.',
     features: [
