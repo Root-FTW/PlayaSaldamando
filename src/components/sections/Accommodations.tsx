@@ -37,7 +37,7 @@ const accommodations = [
     features: [
       'Fully equipped kitchen',
       'Private bathroom',
-      'Air conditioning',
+      'Clean water',
       'Ocean view deck',
       'Bedding included',
       'WiFi available'
