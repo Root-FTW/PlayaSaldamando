@@ -15,7 +15,7 @@ const accommodations = [
     id: 'camping',
     title: 'Beachfront Camping',
     description: 'Pitch your tent just steps from the Pacific Ocean with stunning sunrise views.',
-    price: '$460 MXN',
+    price: '$450 MXN',
     priceNote: 'per night (up to 4 people)',
     features: [
       'Direct beach access',
