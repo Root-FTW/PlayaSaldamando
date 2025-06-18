@@ -14,7 +14,7 @@ interface TripPlannerState {
 
 const accommodationPrices = {
   camping: {
-    overnight: 460, // MXN per night (up to 4 people)
+    overnight: 450, // MXN per night (up to 4 people)
     day: 310, // MXN for day camping
     extraPerson: 70, // MXN per additional person
   },
@@ -133,7 +133,7 @@ export default function TripPlanner() {
                 }`}
               >
                 <div className="text-sm font-medium">Camping</div>
-                <div className="text-xs text-gray-500">$460 MXN/night</div>
+                <div className="text-xs text-gray-500">$450 MXN/night</div>
               </button>
               <button
                 onClick={() => setTripData(prev => ({ ...prev, accommodationType: 'trailer' }))}
