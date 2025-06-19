@@ -19,7 +19,7 @@ const accommodationPrices = {
     extraPerson: 70, // MXN per additional person
   },
   trailer: {
-    overnight: 1700, // MXN per night (average)
+    overnight: 2000, // MXN per night (average)
     extraPerson: 70,
   }
 };
