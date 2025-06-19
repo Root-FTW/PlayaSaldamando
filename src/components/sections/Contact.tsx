@@ -37,7 +37,7 @@ const contactInfo = [
 const locationInfo = {
   address: 'Kilometer 94, Tijuana-Ensenada Toll Road',
   city: 'Ensenada, Baja California, Mexico',
-  coordinates: '31.8444° N, 116.6062° W',
+  coordinates: '31.933611, -116.754207',
   directions: 'Located between Tijuana and Ensenada on the scenic coastal highway'
 };
 
@@ -288,9 +288,11 @@ export default function Contact() {
                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-ocean-500 focus:border-ocean-500"
                   >
                     <option value="">Select type</option>
-                    <option value="camping">Beachfront Camping</option>
-                    <option value="trailer">Trailer Rental</option>
+                    <option value="night-camping">Night Camping</option>
                     <option value="day-camping">Day Camping</option>
+                    <option value="trailer-rentals">Trailer Rentals</option>
+                    <option value="rv-overnight">RV/Trailer Overnight</option>
+                    <option value="rv-day">RV/Trailer Day Visit</option>
                   </select>
                 </div>
               </div>
