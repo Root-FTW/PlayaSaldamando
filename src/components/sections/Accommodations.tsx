@@ -48,7 +48,7 @@ const accommodations = [
     id: 'day-camping',
     title: 'Day Camping',
     description: 'Perfect for day trips with full access to beach and facilities.',
-    price: '$310 MXN',
+    price: '$300 MXN',
     priceNote: 'per day (6 AM - 6 PM)',
     features: [
       'Beach access',
