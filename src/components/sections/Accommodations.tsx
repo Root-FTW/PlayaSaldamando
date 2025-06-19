@@ -13,7 +13,7 @@ import {
 const accommodations = [
   {
     id: 'camping',
-    title: 'Beachfront Camping',
+    title: 'Night Camping',
     description: 'Pitch your tent just steps from the Pacific Ocean with stunning sunrise views.',
     price: '$450 MXN',
     priceNote: 'per night (up to 4 people)',
@@ -27,6 +27,23 @@ const accommodations = [
     ],
     image: 'https://images.unsplash.com/photo-1504851149312-7a075b496cc7?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
     popular: true
+  },
+  {
+    id: 'day-camping',
+    title: 'Day Camping',
+    description: 'Perfect for day trips with full access to beach and facilities.',
+    price: '$300 MXN',
+    priceNote: 'per day (6 AM - 6 PM)',
+    features: [
+      'Beach access',
+      'Restroom facilities',
+      'Picnic areas',
+      'Parking included',
+      'Fire pit access',
+      'Fresh water'
+    ],
+    image: 'https://images.unsplash.com/photo-1439066615861-d1af74d74000?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+    popular: false
   },
   {
     id: 'trailer',
@@ -45,20 +62,37 @@ const accommodations = [
     popular: false
   },
   {
-    id: 'day-camping',
-    title: 'Day Camping',
-    description: 'Perfect for day trips with full access to beach and facilities.',
-    price: '$300 MXN',
+    id: 'rv-overnight',
+    title: 'RV/Trailer Overnight',
+    description: 'Comfort meets adventure with your RV or trailer on the beach.',
+    price: '$470 MXN',
+    priceNote: 'per night (up to 4 people)',
+    features: [
+      'RV/Trailer parking',
+      'Electrical hookup',
+      'Beach access',
+      'Fresh water',
+      'Fire pit included',
+      'Security patrol'
+    ],
+    image: 'https://images.unsplash.com/photo-1523987355523-c7b5b0dd90a7?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+    popular: false
+  },
+  {
+    id: 'rv-day',
+    title: 'RV/Trailer Day Visit',
+    description: 'Bring your RV for a perfect day at the beach with all facilities.',
+    price: '$320 MXN',
     priceNote: 'per day (6 AM - 6 PM)',
     features: [
-      'Beach access',
+      'RV/Trailer parking',
+      'Beach access all day',
       'Restroom facilities',
-      'Picnic areas',
-      'Parking included',
+      'Fresh water access',
       'Fire pit access',
-      'Fresh water'
+      'Security supervision'
     ],
-    image: 'https://images.unsplash.com/photo-1439066615861-d1af74d74000?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+    image: 'https://images.unsplash.com/photo-1523987355523-c7b5b0dd90a7?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
     popular: false
   }
 ];
@@ -92,7 +126,7 @@ export default function Accommodations() {
         </motion.div>
 
         {/* Accommodations Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-16">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6 mb-16">
           {accommodations.map((accommodation, index) => (
             <motion.div
               key={accommodation.id}
@@ -100,7 +134,7 @@ export default function Accommodations() {
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: index * 0.2 }}
               viewport={{ once: true }}
-              className={`relative bg-white rounded-xl shadow-lg overflow-hidden border-2 transition-all duration-300 hover:shadow-xl hover:scale-105 ${
+              className={`relative bg-white rounded-xl shadow-lg overflow-hidden border-2 transition-all duration-300 hover:shadow-xl hover:scale-105 flex flex-col h-full ${
                 accommodation.popular ? 'border-ocean-500' : 'border-gray-200'
               }`}
             >
@@ -121,18 +155,24 @@ export default function Accommodations() {
                 <div className="absolute inset-0 bg-black/20"></div>
               </div>
 
-              <div className="p-6">
-                <div className="flex items-center justify-between mb-2">
-                  <h3 className="text-xl font-semibold text-gray-900">
-                    {accommodation.title}
-                  </h3>
-                  <HomeIcon className="h-6 w-6 text-ocean-600" />
+              <div className="p-6 flex flex-col flex-grow">
+                {/* Header Section - Fixed Height */}
+                <div className="mb-4">
+                  <div className="flex items-center justify-between mb-2">
+                    <h3 className="text-xl font-semibold text-gray-900">
+                      {accommodation.title}
+                    </h3>
+                    <HomeIcon className="h-6 w-6 text-ocean-600" />
+                  </div>
+
+                  <div className="h-12 flex items-start">
+                    <p className="text-gray-600 text-sm leading-tight">
+                      {accommodation.description}
+                    </p>
+                  </div>
                 </div>
 
-                <p className="text-gray-600 mb-4">
-                  {accommodation.description}
-                </p>
-
+                {/* Price Section - Fixed Height */}
                 <div className="mb-4">
                   <div className="flex items-baseline space-x-2">
                     <span className="text-2xl font-bold text-ocean-600">
@@ -144,18 +184,27 @@ export default function Accommodations() {
                   </div>
                 </div>
 
-                <div className="space-y-2 mb-6">
-                  {accommodation.features.map((feature, featureIndex) => (
-                    <div key={featureIndex} className="flex items-center space-x-2">
-                      <ShieldCheckIcon className="h-4 w-4 text-green-500 flex-shrink-0" />
-                      <span className="text-sm text-gray-600">{feature}</span>
-                    </div>
-                  ))}
+                {/* Features Section - Flexible Height */}
+                <div className="flex-grow mb-6">
+                  <div className="space-y-2">
+                    {accommodation.features.map((feature, featureIndex) => (
+                      <div key={featureIndex} className="flex items-center space-x-2">
+                        <ShieldCheckIcon className="h-4 w-4 text-green-500 flex-shrink-0" />
+                        <span className="text-sm text-gray-600">{feature}</span>
+                      </div>
+                    ))}
+                  </div>
                 </div>
 
-                <button className="w-full bg-ocean-600 hover:bg-ocean-700 text-white font-medium py-3 px-4 rounded-lg transition-colors duration-200">
-                  Reserve Now
-                </button>
+                {/* Button Section - Fixed at Bottom */}
+                <div className="mt-auto">
+                  <a
+                    href="/contact"
+                    className="w-full bg-ocean-600 hover:bg-ocean-700 text-white font-medium py-3 px-4 rounded-lg transition-colors duration-200 inline-flex items-center justify-center"
+                  >
+                    Reserve Now
+                  </a>
+                </div>
               </div>
             </motion.div>
           ))}
