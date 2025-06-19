@@ -61,7 +61,7 @@ const accommodations = [
     id: 'day-camping',
     title: 'Day Camping',
     subtitle: 'Perfect Day Trip',
-    price: '$310 MXN',
+    price: '$300 MXN',
     priceNote: 'per day (6 AM - 6 PM)',
     description: 'Enjoy all our beach facilities for a perfect day trip. Great for families who want to experience Playa Saldamando without staying overnight.',
     features: [
