@@ -15,7 +15,7 @@ interface TripPlannerState {
 const accommodationPrices = {
   camping: {
     overnight: 450, // MXN per night (up to 4 people)
-    day: 310, // MXN for day camping
+    day: 300, // MXN for day camping
     extraPerson: 70, // MXN per additional person
   },
   trailer: {
