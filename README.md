@@ -59,7 +59,7 @@ The website is fully responsive and provides an optimal viewing experience acros
 - **Accommodations**: 
   - Beachfront camping: $450 MXN/night
   - Trailer rentals: $1,700 MXN/night
-  - Day camping: $310 MXN/day
+  - Day camping: $300 MXN/day
 
 ### Features for Visitors
 - 24/7 staff supervision and security
