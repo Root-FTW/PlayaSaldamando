@@ -54,8 +54,8 @@ class WeatherService {
 
   constructor() {
     this.apiKey = process.env.NEXT_PUBLIC_OPENWEATHER_API_KEY || '';
-    this.latitude = parseFloat(process.env.NEXT_PUBLIC_LATITUDE || '31.8444');
-    this.longitude = parseFloat(process.env.NEXT_PUBLIC_LONGITUDE || '-116.6062');
+    this.latitude = parseFloat(process.env.NEXT_PUBLIC_LATITUDE || '31.933611');
+    this.longitude = parseFloat(process.env.NEXT_PUBLIC_LONGITUDE || '-116.754207');
 
     if (!this.apiKey) {
       console.warn('OpenWeatherMap API key not found. Weather data will be simulated.');
@@ -135,7 +135,7 @@ class WeatherService {
       sunrise: Date.now() / 1000 - 3600, // 1 hour ago
       sunset: Date.now() / 1000 + 7200, // 2 hours from now
       lastUpdated: Date.now() / 1000,
-      location: 'Ensenada, Baja California (Simulated)'
+      location: 'Ensenada, Baja California'
     };
   }
 

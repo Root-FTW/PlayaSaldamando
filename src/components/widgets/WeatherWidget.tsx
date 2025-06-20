@@ -167,12 +167,14 @@ export default function WeatherWidget() {
         </div>
         <div className="text-xs text-gray-500 text-center mt-2">
           {weather.temperature >= 20 && weather.temperature <= 28 && weather.condition !== 'Rain'
-            ? 'Perfect beach weather! 🏖️'
+            ? 'Perfect for camping and beach activities! 🏕️🏖️'
             : weather.condition === 'Rain'
-            ? 'Great day for indoor activities ☔'
+            ? 'Great day to relax in your trailer! 🚐☔'
             : weather.temperature < 20
-            ? 'Cool weather - bring a jacket 🧥'
-            : 'Hot day - stay hydrated! 💧'
+            ? 'Cool weather - perfect for cozy camping! 🧥🔥'
+            : weather.temperature > 28
+            ? 'Hot day - ideal for swimming and water sports! 🏊‍♂️💧'
+            : 'Great weather for outdoor adventures! 🌟'
           }
         </div>
       </div>
